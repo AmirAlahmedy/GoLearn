@@ -24,7 +24,7 @@ func main() {
 
 	// Publish a message
 	msg := message.NewMessage("1", []byte("Hello, Azure Service Bus!"))
-	err = publisher.Publish("your-topic-name", msg)
+	err = publisher.Publish(config.TopicName, msg)
 	if err != nil {
 		fmt.Printf("failed to publish message: %v", err)
 	}
@@ -40,7 +40,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	messages, err := subscriber.Subscribe(ctx, "your-topic-name")
+	messages, err := subscriber.Subscribe(ctx, config.TopicName)
 	if err != nil {
 		fmt.Printf("failed to subscribe: %v", err)
 	}
