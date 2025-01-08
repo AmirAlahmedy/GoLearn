@@ -1,4 +1,4 @@
-package temporal_workflow
+package main
 
 import (
 	"log"
@@ -28,6 +28,19 @@ func main() {
 	number := 100
 	
 	activities := &MyActivityObject{
-		
+		Message: &message,
+		Number: &number,
 	}
+
+	myworker.RegisterActivity(activities)
+
+	registerAOptions := activity.RegisterOptions{
+		Name: "JustAnotherActivity",
+	}
+
+	myworker.RegisterActivityWithOptions(MySimpleActivityDefinition, registerAOptions)
+	err = myworker.Run(worker.InterruptCh())
+	if err!= nil {
+        log.Fatalln("Unable to start worker", err)
+    }
 }

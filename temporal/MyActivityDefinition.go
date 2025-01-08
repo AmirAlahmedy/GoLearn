@@ -1,4 +1,4 @@
-package temporal_workflow
+package main
 
 import (	
 	"context"
@@ -11,7 +11,7 @@ type MyActivityParam struct {
 	ActivityParamY int
 }
 
-type MyAcrtivityResultOject struct {
+type MyActivityResultObject struct {
 	ResultFieldX string
 	ResultFieldY int
 }
@@ -26,13 +26,13 @@ type MyActivityObject struct {
 	Number *int
 }
 
-func (a *MyActivityObject) MyActivityDefinition(ctx context.Context, param *MyActivityParam) (*MyAcrtivityResultOject, error) {
+func (a *MyActivityObject) MyActivityDefinition(ctx context.Context, param *MyActivityParam) (*MyActivityResultObject, error) {
 	// Use Activities for calling external APIs
 	logger := activity.GetLogger(ctx)
 	logger.Info("The message is:", param.ActivityParamX)
 	logger.Info("The number is:", param.ActivityParamY)
 
-	result := &MyAcrtivityResultOject{
+	result := &MyActivityResultObject{
 		ResultFieldX: "This is the result field X",
 		ResultFieldY: 100,
 	}
@@ -49,8 +49,8 @@ func (a *MyActivityObject) PrintInfo(ctx context.Context, param MyActivityParam)
 	return nil
 }
 
-func (a *MyActivityObject) GetInfo(ctx context.Context, param MyActivityParam) (*MyAcrtivityResultOject, error) {
-	return &MyActivityObject{
+func (a *MyActivityObject) GetInfo(ctx context.Context, param MyActivityParam) (*MyActivityResultObject, error) {
+	return &MyActivityResultObject{
 		ResultFieldX: *a.Message,
 		ResultFieldY: *a.Number,
 	}, nil
