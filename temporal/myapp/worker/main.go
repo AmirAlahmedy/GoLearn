@@ -4,9 +4,11 @@ import (
 	"log"
 
 	"go.temporal.io/sdk/activity"
-    "go.temporal.io/sdk/client"
-    "go.temporal.io/sdk/worker"
-    "go.temporal.io/sdk/workflow"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/workflow"
+
+	"temporal/myapp"
 )
 
 func main() {
@@ -18,16 +20,16 @@ func main() {
 
 	myworker := worker.New(temporalClient, "my-custom-task-queue-name", worker.Options{})
 
-	myworker.RegisterWorkflow(MyWorkflowDefinition)
+	myworker.RegisterWorkflow(myapp.MyWorkflowDefinition)
 	registerWFOptions := workflow.RegisterOptions{
 		Name: "JustAnotherWorkflow",
 	}
 
-	myworker.RegisterWorkflowWithOptions(MyWorkflowDefinition, registerWFOptions)
+	myworker.RegisterWorkflowWithOptions(myapp.MyWorkflowDefinition, registerWFOptions)
 	message := "This could be a connection string or endpoint details"
 	number := 100
 	
-	activities := &MyActivityObject{
+	activities := &myapp.MyActivityObject{
 		Message: &message,
 		Number: &number,
 	}
@@ -38,7 +40,7 @@ func main() {
 		Name: "JustAnotherActivity",
 	}
 
-	myworker.RegisterActivityWithOptions(MySimpleActivityDefinition, registerAOptions)
+	myworker.RegisterActivityWithOptions(myapp.MySimpleActivityDefinition, registerAOptions)
 	err = myworker.Run(worker.InterruptCh())
 	if err!= nil {
         log.Fatalln("Unable to start worker", err)
